@@ -14,8 +14,8 @@ namespace SortingForm
     {
         const int
         bubble = 0, insertion = 1, heap = 2,
-        merge = 3, mergerec = 4, quick = 5, 
-        counting = 6, bucket = 7, radix = 8;
+        merge = 3, quick = 4, 
+        counting = 5, radix = 6;
 
         bool isInputChange = false;
 
@@ -79,11 +79,9 @@ namespace SortingForm
                 case bubble: s.BubbleSort(); break;
                 case insertion: s.InsertionSort(); break;
                 case heap: s.HeapSort(); break;
-                case merge: s.MergeSortNonRecursive(); break;
-                case mergerec: s.MergeSort(); break;
+                case merge: s.MergeSort(); break;
                 case quick: s.QuickSort(); break;
                 case counting: s.CountingSort(); break;
-                case bucket: s.BucketSort(); break;
                 case radix: s.RadixSort(); break;
                 default: break;
             }

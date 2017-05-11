@@ -243,49 +243,51 @@ namespace SortingForm
         */
         private void CountSort(int decim)
         {
-            //najdeme minimum a maximum
+            int[] counting;
             int min, max;
+            int index;
+            min = max = array[0];
 
-            if (decim == 0) min = max = array[0];
-            else min = max = (array[0] / decim) % 10;
-
-            for (int i = 1; i < array.Length; ++i)
+            //najdeme minimum a maximum
+            if (decim == 0)
             {
-                int idx;
-                if (decim == 0) idx = array[i];
-                else idx = (array[i] / decim) % 10;
+                for (int i = 1; i < array.Length; ++i)
+                    if (array[i] < min) min = array[i];
+                    else if (array[i] > max) max = array[i];
 
-                if (idx < min) min = idx;
-                else if (idx > max) max = idx;
+                counting = new int[max - min + 1];
             }
+            else counting = new int[10];
 
             //spocitame vyskyty jednotlivych hodnot
-            int[] counting = new int[max - min + 1];
-
             for (int i = 0; i < array.Length; ++i)
             {
-                if (decim == 0) ++counting[array[i] - min];
-                else counting[((array[i] / decim) % 10) - min]++;
+                if (decim == 0) index = array[i] - min;
+                else index = (array[i] / decim) % 10;
+
+                ++counting[index];
             }
+
             //ted chceme mit posledni index kde konci vyskyt hodnoty
-            counting[0] -= 1;
-            for (int i = 1; i < counting.Length; ++i)
+            --counting[0];
+            if (decim == 0) index = counting.Length;
+            else index = 10;
+
+            for (int i = 1; i < index; ++i)
                 counting[i] += counting[i - 1];
 
             //pak jen projdeme od konce pole a vytvorime serazene pole
             int[] res = new int[array.Length];
+
             for (int i = array.Length - 1; i >= 0; --i)
             {
-                if (decim == 0)
-                    res[counting[array[i] - min]--] = array[i];
-                else
-                {
-                    res[counting[(array[i] / decim) % 10]] = array[i];
-                    counting[(array[i] / decim) % 10]--;
-                }
+                if (decim == 0) index = array[i] - min;
+                else index = (array[i] / decim) % 10;
+
+                res[counting[index]--] = array[i];
             }
 
-            for (int i = 0; i < array.Length; ++i)
+            for (int i = 0; i < array.Length; i++)
                 array[i] = res[i];
         }
 
@@ -305,6 +307,11 @@ namespace SortingForm
         - tj. na jednotky, desitky, stovky...
         */
 
+        ///<summary>
+        ///Stabilni trideni, slozitost je pro m ciferna cisla O (m * N),
+        ///kde N je slozitost vnitrniho trideni.<para/>
+        ///Jako vnitrni trideni je vybran CountingSort
+        ///</summary> 
         public void RadixSort()
         {
             //najdeme maximum

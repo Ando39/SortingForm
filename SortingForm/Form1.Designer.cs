@@ -231,10 +231,8 @@
             "insertion",
             "heap ",
             "merge",
-            "mergerec",
             "quick",
             "counting",
-            "bucket",
             "radix"});
             this.sortList.Location = new System.Drawing.Point(180, 233);
             this.sortList.Name = "sortList";
