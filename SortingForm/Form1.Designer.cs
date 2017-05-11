@@ -44,6 +44,7 @@
             this.customizeArray = new System.Windows.Forms.GroupBox();
             this.showArray = new System.Windows.Forms.Button();
             this.sortList = new System.Windows.Forms.ListBox();
+            this.timeOutput = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.minVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arraySize)).BeginInit();
@@ -120,6 +121,7 @@
             this.input.Location = new System.Drawing.Point(12, 56);
             this.input.Multiline = true;
             this.input.Name = "input";
+            this.input.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.input.Size = new System.Drawing.Size(723, 60);
             this.input.TabIndex = 6;
             this.input.TextChanged += new System.EventHandler(this.input_TextChanged);
@@ -129,6 +131,7 @@
             this.output.Location = new System.Drawing.Point(12, 168);
             this.output.Multiline = true;
             this.output.Name = "output";
+            this.output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.output.Size = new System.Drawing.Size(723, 58);
             this.output.TabIndex = 7;
             // 
@@ -156,7 +159,7 @@
             this.isRandom.AutoSize = true;
             this.isRandom.Checked = true;
             this.isRandom.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.isRandom.Location = new System.Drawing.Point(393, 242);
+            this.isRandom.Location = new System.Drawing.Point(360, 241);
             this.isRandom.Name = "isRandom";
             this.isRandom.Size = new System.Drawing.Size(153, 21);
             this.isRandom.TabIndex = 10;
@@ -234,10 +237,19 @@
             "quick",
             "counting",
             "radix"});
-            this.sortList.Location = new System.Drawing.Point(180, 233);
+            this.sortList.Location = new System.Drawing.Point(166, 233);
             this.sortList.Name = "sortList";
             this.sortList.Size = new System.Drawing.Size(170, 36);
             this.sortList.TabIndex = 14;
+            // 
+            // timeOutput
+            // 
+            this.timeOutput.Enabled = false;
+            this.timeOutput.Location = new System.Drawing.Point(520, 228);
+            this.timeOutput.Name = "timeOutput";
+            this.timeOutput.Size = new System.Drawing.Size(221, 22);
+            this.timeOutput.TabIndex = 15;
+            this.timeOutput.Visible = false;
             // 
             // Form1
             // 
@@ -245,6 +257,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(753, 487);
+            this.Controls.Add(this.timeOutput);
             this.Controls.Add(this.sortList);
             this.Controls.Add(this.isRandom);
             this.Controls.Add(this.customizeArray);
@@ -283,6 +296,7 @@
         private System.Windows.Forms.GroupBox customizeArray;
         private System.Windows.Forms.Button showArray;
         private System.Windows.Forms.ListBox sortList;
+        private System.Windows.Forms.TextBox timeOutput;
     }
 }
 

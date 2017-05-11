@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace SortingForm
 {
@@ -70,9 +65,10 @@ namespace SortingForm
             int[] array = new int[values.Length];
             foreach (int v in values) array[index++] = v;
 
-            //if (sortList.SelectedIndex == bubble) new Sorting(array).BubbleSort();
-
             Sorting s = new Sorting(array);
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
             switch (sortList.SelectedIndex)
             {
@@ -85,8 +81,11 @@ namespace SortingForm
                 case radix: s.RadixSort(); break;
                 default: break;
             }
+            sw.Stop();
 
             foreach (int i in array) output.Text += i + " ";
+            timeOutput.Show();
+            timeOutput.Text = "Sorting time: " + sw.Elapsed;
         }
 
         private void showArray_Click(object sender, EventArgs e)
@@ -96,7 +95,7 @@ namespace SortingForm
 
             size = (int)arraySize.Value;
             min = (int)minVal.Value;
-            max = (int)maxVal.Value;
+            max = (int)maxVal.Value+1;
 
             input.Text = "";
 
