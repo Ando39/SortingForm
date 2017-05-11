@@ -22,7 +22,7 @@ namespace SortingForm
         */
 
         ///<summary>
-        ///Stabilni, ale pomaly, O(n^2)
+        ///Stabilni, ale pomaly, O(n^2).
         ///</summary> 
         public void BubbleSort()
         {
@@ -54,7 +54,7 @@ namespace SortingForm
         */
 
         ///<summary>
-        ///Stabilni, pro mala pole rychly, O(n^2)
+        ///Stabilni, pro mala pole rychly, O(n^2).
         ///</summary> 
         public void InsertionSort()
         {
@@ -95,15 +95,17 @@ namespace SortingForm
             {
                 child = parent * 2 + 1;
                 if ((child < last) && (array[child] < array[child + 1]))
-                    if (array[parent] < array[child])
-                    {
-                        temp = array[parent];
-                        array[parent] = array[child];
-                        array[child] = temp;
-                        parent = child;
-                    }
-                    else
-                        return;
+                    child++;
+
+                if (array[parent] < array[child])
+                {
+                    temp = array[parent];
+                    array[parent] = array[child];
+                    array[child] = temp;
+                    parent = child;
+                }
+                else
+                    return;
             }
         }
 
@@ -121,7 +123,7 @@ namespace SortingForm
         */
 
         ///<summary>
-        ///Nestabilni trideni, v prumernem i nejhorsim pripade ma O(n log n)
+        ///Nestabilni trideni, v prumernem i nejhorsim pripade ma O(n log n).
         ///</summary>
         public void HeapSort()
         {
@@ -138,76 +140,48 @@ namespace SortingForm
                 BubbleDown(last);
             }
         }
-
-        // vytvoreni noveho pole z casti arr
-        private int[] CopyOfRange(int[] arr, int start, int end)
+        /*
+        Slevani dvou poli do jednoho
+        Nakopirujeme mensi prvek ze dvou do res a kdyz
+        jsme na konci jednoho pole, prekopirujeme zbytek
+        */
+        private void Merge(int[] res, int left, int right)
         {
-            int len = end - start;
-            int[] res = new int[len];
-            for (int i = 0; i < len; i++)
+            int middle = (left + right) / 2;
+            int index = left;
+            int leftidx = left;
+            int rightidx = middle + 1;
+
+            while (leftidx <= middle && rightidx <= right)
             {
-                res[i] = arr[start + i];
+                if (array[rightidx] < array[leftidx])
+                    res[index] = array[rightidx++];
+                else
+                    res[index] = array[leftidx++];
+                ++index;
             }
-            return res;
+            while (leftidx <= middle)
+            {
+                res[index] = array[leftidx++];
+                ++index;
+            }
+            while (rightidx <= right)
+            {
+                res[index] = array[rightidx++];
+                ++index;
+            }
         }
 
-        // slevani dvou poli do jednoho
-        // nakopirujeme mensi prvek ze dvou do res a kdyz
-        // jsme na konci jednoho pole, prekopirujeme zbytek
-        private int[] Merge(int[] arr1, int[] arr2)
-        {
-            int len1 = arr1.Length;
-            int len2 = arr2.Length;
-            int len = len1 + len2;
-            int a = 0, b = 0;       //pomocne promenne pro pocitani v poli
-            int[] res = new int[len];
-
-            for (int i = 0; i < len; ++i)
-            {
-                if (b < len2 && a < len1)
-                {
-                    if (arr1[a] > arr2[b]) res[i] = arr2[b++];
-                    else res[i] = arr1[a++];
-                }
-                else if (b < len2) res[i] = arr2[b++];
-                else res[i] = arr1[a++];
-            }
-
-            return res;
-        }
-        // rozdelime pole a pak pouzijeme metodu Merge
-        // pro levou a pravou cast pole
+        /*
+        Rozdelime pole a pak se rekurzivne zavolame
+        pro levou a pravou cast pole 
+        Pak se vracime z rekurze a slevame
+        casti dohromady a tim je setridime
+        */
 
         ///<summary>
         ///Rychle a stabilni trideni, O(n log n). 
-        ///Bez pouziti rekurze.
         ///</summary>
-        public void MergeSortNonRecursive()
-        {
-            int len = array.Length;
-            int n = 1;      // pocet srovnani (srovnani podle 1. prvku, 2. prvku atd.)
-            int shift;      // posun v poli
-            int two_size;   // pocet prvku pro druhe pole
-            int[] arr2;
-            while (n < len)
-            {
-                shift = 0;
-                while (shift < len)
-                {
-                    if (shift + n >= len) break;
-                    if (shift + n * 2 > len) two_size = len - (shift + n);
-                    else two_size = n;
-                    int[] leftarr = CopyOfRange(array, shift, shift + n);
-                    int[] rightarr = CopyOfRange(array, shift + n, shift + n + two_size);
-                    arr2 = Merge(leftarr, rightarr);
-                    for (int i = 0; i < n + two_size; ++i)
-                        array[shift + i] = arr2[i];
-                    shift += n * 2;
-                }
-                n = n * 2;
-            }
-        }
-
         public void MergeSort()
         {
             MakeMerge(new int[array.Length], 0, array.Length - 1);
@@ -220,10 +194,7 @@ namespace SortingForm
             MakeMerge(res, left, middle);
             MakeMerge(res, middle + 1, right);
 
-            int[] leftarr = CopyOfRange(array, left, middle);
-            int[] rightarr = CopyOfRange(array, middle + 1, right);
-
-            Merge(leftarr, rightarr);
+            Merge(res, left, right);
 
             for (int i = left; i <= right; ++i)
             {
@@ -231,12 +202,17 @@ namespace SortingForm
             }
         }
 
+        ///<summary>
+        ///Slozitost O(n2), v prumernem pripade O(n log n). 
+        ///Zalezi na tom jak se zvoli pivot
+        ///</summary> 
         public void QuickSort()
         {
             DoQuickSort(0, array.Length);
         }
 
-        // za pivota volime nejlevejsi prvek 
+        // V teto implementaci Quicksortu se
+        // za pivot zvoli vzdy nejlevejsi prvek 
         private void DoQuickSort(int left, int right)
         {
             int pom;
@@ -261,45 +237,83 @@ namespace SortingForm
             }
         }
 
-        public void CountingSort()
+        /*
+        decim nula - pracuje s celymi cisly
+        decim nenula - pracuje jen c ciframi (pro RadixSort)
+        */
+        private void CountSort(int decim)
         {
             //najdeme minimum a maximum
             int min, max;
-            min = max = array[0];
+
+            if (decim == 0) min = max = array[0];
+            else min = max = (array[0] / decim) % 10;
+
             for (int i = 1; i < array.Length; ++i)
-                if (array[i] < min) min = array[i];
-                else if (array[i] > max) max = array[i];
+            {
+                int idx;
+                if (decim == 0) idx = array[i];
+                else idx = (array[i] / decim) % 10;
+
+                if (idx < min) min = idx;
+                else if (idx > max) max = idx;
+            }
 
             //spocitame vyskyty jednotlivych hodnot
             int[] counting = new int[max - min + 1];
-            for (int i = 0; i < array.Length - 1; ++i)
-                ++counting[array[i] - min];
 
+            for (int i = 0; i < array.Length; ++i)
+            {
+                if (decim == 0) ++counting[array[i] - min];
+                else counting[((array[i] / decim) % 10) - min]++;
+            }
             //ted chceme mit posledni index kde konci vyskyt hodnoty
             counting[0] -= 1;
             for (int i = 1; i < counting.Length; ++i)
                 counting[i] += counting[i - 1];
 
-            foreach (int i in counting) Console.Write("{0} ", i);
-            Console.WriteLine();
-
             //pak jen projdeme od konce pole a vytvorime serazene pole
+            int[] res = new int[array.Length];
             for (int i = array.Length - 1; i >= 0; --i)
             {
-                int index = counting[array[i] - min] - 1;
-                Console.WriteLine(index);
-                //array[index] = array[i];
+                if (decim == 0)
+                    res[counting[array[i] - min]--] = array[i];
+                else
+                {
+                    res[counting[(array[i] / decim) % 10]] = array[i];
+                    counting[(array[i] / decim) % 10]--;
+                }
             }
+
+            for (int i = 0; i < array.Length; ++i)
+                array[i] = res[i];
         }
 
-        public void BucketSort()
+        ///<summary>
+        ///Nejlepsi pro opakujici se hodnoty. 
+        ///Slozitost je O(n+m), kde m je delka
+        ///pole s indexy
+        ///</summary> 
+        public void CountingSort()
         {
-
+            CountSort(0);
         }
+
+        /*
+        Zavolame CountingSort na jednotlive 
+        cifry (od konce) hodnot ulozenych v poli
+        - tj. na jednotky, desitky, stovky...
+        */
 
         public void RadixSort()
         {
+            //najdeme maximum
+            int max = array[0];
+            for (int i = 1; i < array.Length; ++i)
+                if (array[i] > max) max = array[i];
 
+            for (int decim = 1; max / decim > 0; decim *= 10)
+                CountSort(decim);
         }
     }
 }
