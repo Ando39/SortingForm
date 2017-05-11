@@ -180,7 +180,7 @@
             // 
             this.arraySize.Location = new System.Drawing.Point(67, 86);
             this.arraySize.Maximum = new decimal(new int[] {
-            1000,
+            10000,
             0,
             0,
             0});
@@ -245,7 +245,7 @@
             // timeOutput
             // 
             this.timeOutput.Enabled = false;
-            this.timeOutput.Location = new System.Drawing.Point(520, 228);
+            this.timeOutput.Location = new System.Drawing.Point(514, 226);
             this.timeOutput.Name = "timeOutput";
             this.timeOutput.Size = new System.Drawing.Size(221, 22);
             this.timeOutput.TabIndex = 15;

@@ -9,7 +9,7 @@ namespace SortingForm
     {
         const int
         bubble = 0, insertion = 1, heap = 2,
-        merge = 3, quick = 4, 
+        merge = 3, quick = 4,
         counting = 5, radix = 6;
 
         bool isInputChange = false;
@@ -82,8 +82,10 @@ namespace SortingForm
                 default: break;
             }
             sw.Stop();
+            string st = "";
+            foreach (int i in array) st += i + " ";
+            output.Text = st;
 
-            foreach (int i in array) output.Text += i + " ";
             timeOutput.Show();
             timeOutput.Text = "Sorting time: " + sw.Elapsed;
         }
@@ -95,12 +97,13 @@ namespace SortingForm
 
             size = (int)arraySize.Value;
             min = (int)minVal.Value;
-            max = (int)maxVal.Value+1;
+            max = (int)maxVal.Value + 1;
 
-            input.Text = "";
+            string st = "";
 
             for (int i = 0; i < size; ++i)
-                input.Text += rnd.Next(min, max) + " ";
+                st += rnd.Next(min, max) + " ";
+            input.Text = st;
         }
     }
 }
